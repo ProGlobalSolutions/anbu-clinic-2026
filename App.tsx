@@ -15,12 +15,12 @@ import Contact from './pages/Contact';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 
-// 🔥 IMPORT ADMIN EDIT PAGES
 import EditHero from './pages/admin/EditHero';
 import EditAbout from './pages/admin/EditAbout';
 import EditFaqs from './pages/admin/EditFaqs';
 import EditTreatments from './pages/admin/EditTreatments';
 import EditProcess from './pages/admin/EditProcess';
+import EditBlog from './pages/admin/EditBlog';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -39,23 +39,23 @@ const App: React.FC = () => {
       <Layout>
         <Routes>
 
-          {/* ================= PUBLIC ROUTES ================= */}
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
 
           <Route path="/treatments" element={<GeneralTreatments />} />
           <Route path="/treatments/:id" element={<GeneralTreatments />} />
 
+          {/* Dynamic Treatment Process */}
           <Route path="/process/:id" element={<ConditionTreatment />} />
 
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* ================= ADMIN LOGIN ================= */}
+          {/* Admin Routes */}
           <Route path="/admin" element={<AdminLogin />} />
 
-          {/* ================= ADMIN DASHBOARD ================= */}
           <Route
             path="/admin-dashboard"
             element={
@@ -65,7 +65,6 @@ const App: React.FC = () => {
             }
           />
 
-          {/* ================= ADMIN EDIT ROUTES ================= */}
           <Route
             path="/admin-hero"
             element={
@@ -83,6 +82,14 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+  path="/admin-blog"
+  element={
+    <ProtectedRoute>
+      <EditBlog />
+    </ProtectedRoute>
+  }
+/>
 
           <Route
             path="/admin-faqs"
@@ -111,7 +118,7 @@ const App: React.FC = () => {
             }
           />
 
-          {/* ================= FALLBACK ================= */}
+          {/* Fallback */}
           <Route path="*" element={<Home />} />
 
         </Routes>

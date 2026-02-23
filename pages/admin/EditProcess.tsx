@@ -10,6 +10,7 @@ import {
 const EditProcess = () => {
   const [processes, setProcesses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [successId, setSuccessId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +84,8 @@ const EditProcess = () => {
       sections: data.sections,
     });
 
-    alert("Updated Successfully");
+    setSuccessId(docId);
+    setTimeout(() => setSuccessId(null), 2000);
   };
 
   if (loading) return <div className="p-10">Loading...</div>;
@@ -95,12 +97,16 @@ const EditProcess = () => {
       {processes.map((item) => (
         <div key={item.id} className="border p-6 rounded-xl bg-white shadow space-y-6">
 
-          {/* BIG CONDITION HEADING */}
           <h2 className="text-2xl font-bold text-herbal-green uppercase">
             {item.id.replace("-", " ")}
           </h2>
 
-          {/* BASIC INFO */}
+          {successId === item.id && (
+            <div className="bg-green-100 text-green-700 px-4 py-2 rounded">
+              Updated Successfully
+            </div>
+          )}
+
           <div className="space-y-4">
             <h3 className="font-bold text-lg">Basic Information</h3>
 
@@ -138,7 +144,6 @@ const EditProcess = () => {
             </div>
           </div>
 
-          {/* SECTIONS */}
           <div className="space-y-8">
             <h3 className="font-bold text-lg">Sections</h3>
 

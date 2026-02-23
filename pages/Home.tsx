@@ -1,194 +1,280 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import imghome from '../assets/imghome.webp';
+import heroBg from '../assets/hero.webp'
 import { 
-  Phone, 
   ArrowRight,
-  Leaf,
-  Shield,
-  Droplet,
-  Activity,
+  ShieldCheck,
+  Droplets,
   HeartPulse,
-  Sparkles
+  Sparkles,
+  Activity,
+  Flower2,
+  CheckCircle
 } from 'lucide-react';
-import { SKIN_CONDITIONS, WHY_CHOOSE_US, CONTACT_INFO } from '../constants';
+import { SKIN_CONDITIONS, WHY_CHOOSE_US } from '../constants';
 import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 const Home = () => {
 
-  /* ================= HERO STATE ================= */
   const [heroData, setHeroData] = useState<any>(null);
+  const [whyVisible, setWhyVisible] = useState(false);
+  const whyRef = useRef<HTMLDivElement>(null);
 
+  const [statsVisible, setStatsVisible] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
+
+  const statsData = [
+    { value: 5000, suffix: "+", label: "Patients Treated" },
+    { value: 95, suffix: "%", label: "Long-Term Recovery Rate" },
+    { value: 15, suffix: "+", label: "Years of Experience" },
+    { value: 100, suffix: "%", label: "Herbal & Steroid-Free Care" }
+  ];
+
+  /* ================= HERO FETCH ================= */
   useEffect(() => {
     const fetchHero = async () => {
       try {
-        const docRef = doc(db, "hero", "main");
-        const snap = await getDoc(docRef);
-
-        if (snap.exists()) {
-          setHeroData(snap.data());
-        }
+        const snap = await getDoc(doc(db, "hero", "main"));
+        if (snap.exists()) setHeroData(snap.data());
       } catch (error) {
-        console.error("Error fetching hero:", error);
+        console.error(error);
       }
     };
-
     fetchHero();
   }, []);
+
+  /* ================= WHY ANIMATION ================= */
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setWhyVisible(true),
+      { threshold: 0.25 }
+    );
+    if (whyRef.current) observer.observe(whyRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  /* ================= STATS ANIMATION ================= */
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => entry.isIntersecting && setStatsVisible(true),
+      { threshold: 0.3 }
+    );
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!statsVisible) return;
+
+    statsData.forEach((stat, index) => {
+      let start = 0;
+      const duration = 1500;
+      const increment = stat.value / (duration / 16);
+
+      const counter = setInterval(() => {
+        start += increment;
+        if (start >= stat.value) {
+          start = stat.value;
+          clearInterval(counter);
+        }
+
+        setCounts(prev => {
+          const updated = [...prev];
+          updated[index] = Math.floor(start);
+          return updated;
+        });
+      }, 16);
+    });
+  }, [statsVisible]);
 
   return (
     <div>
 
-      {/* ================= HERO SECTION ================= */}
+      {/* ================= HERO ================= */}
       <section
-        className="relative h-[50vh] md:h-[80vh] flex items-center justify-center text-white"
+        className="relative h-[47vh] md:h-[80vh] flex items-center justify-center text-white"
         style={{
-          backgroundImage: `url(${heroData?.imageUrl || ''})`,
+      backgroundImage: `url(${heroBg})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundPosition: 'center'
         }}
       >
         <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="relative z-10 max-w-xl mx-auto px-6 text-center space-y-5">
-
-          <div className="inline-block px-4 py-1 bg-white/20 backdrop-blur-sm rounded-full">
-            <span className="text-xs font-semibold tracking-wide">
-              {heroData?.badge}
-            </span>
+          <div className="inline-block px-4 py-1 bg-white/20 rounded-full text-xs font-semibold">
+            {heroData?.badge}
           </div>
 
           <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-snug">
             {heroData?.titleLine1}{" "}
-            <span className="text-green-300">
-              {heroData?.highlight}
-            </span><br />
+            <span className="text-grass-green">{heroData?.highlight}</span><br />
             {heroData?.titleLine2}
           </h1>
 
-          <p className="text-sm md:text-base text-white/90 leading-relaxed">
-            {heroData?.description}
-          </p>
-
-          <div className="pt-2">
-            <Link
-              to="/contact"
-              className="inline-block bg-white text-herbal-green px-6 py-3 rounded-lg font-semibold text-sm md:text-base hover:bg-soft-beige transition shadow-md"
-            >
-              Book Consultation
-            </Link>
-          </div>
-
+       
+          <Link
+            to="/contact"
+            className="inline-block bg-white text-herbal-green px-6 py-3 rounded-lg font-semibold text-sm hover:bg-gray-100 transition"
+          >
+            Book Consultation
+          </Link>
         </div>
       </section>
-      {/* ================= END HERO ================= */}
 
 
-      {/* ================= CONDITIONS SECTION ================= */}
-      <section className="py-8 md:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ================= NEW PREMIUM SKIN CONDITIONS ================= */}
+      <section className="py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-6">
 
-          <div className="text-center mb-6 md:mb-16">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               Skin Conditions We Manage
             </h2>
-            <p className="mt-3 text-gray-600 text-sm md:text-base">
-              Evidence-based herbal care for complex dermatological challenges
+            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+              Specialized Siddha-based herbal protocols for chronic and inflammatory skin disorders.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
             {SKIN_CONDITIONS.map((condition, index) => {
 
-              const icons = [
-                { icon: <Leaf className="w-4 h-4 text-green-600" />, bg: "bg-green-100" },
-                { icon: <Shield className="w-4 h-4 text-blue-600" />, bg: "bg-blue-100" },
-                { icon: <Droplet className="w-4 h-4 text-cyan-600" />, bg: "bg-cyan-100" },
-                { icon: <Activity className="w-4 h-4 text-purple-600" />, bg: "bg-purple-100" },
-                { icon: <HeartPulse className="w-4 h-4 text-red-600" />, bg: "bg-red-100" },
-                { icon: <Sparkles className="w-4 h-4 text-amber-600" />, bg: "bg-amber-100" }
+              const iconSet = [
+                { icon: <Droplets />, color: "bg-blue-100 text-blue-600" },
+                { icon: <ShieldCheck />, color: "bg-green-100 text-green-600" },
+                { icon: <HeartPulse />, color: "bg-red-100 text-red-600" },
+                { icon: <Sparkles />, color: "bg-purple-100 text-purple-600" },
+                { icon: <Activity />, color: "bg-amber-100 text-amber-600" },
+                { icon: <Flower2 />, color: "bg-emerald-100 text-emerald-600" }
               ];
 
-              const current = icons[index % icons.length];
+              const current = iconSet[index % iconSet.length];
 
               return (
                 <div
                   key={condition.id}
-                  className="p-4 md:p-6 lg:p-8 border border-gray-100 rounded-lg hover:shadow-md transition-all duration-300 space-y-3 group"
+                  className="group bg-white border border-gray-100 rounded-xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
-                  <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center ${current.bg}`}>
-                    {current.icon}
+                  <div className="flex justify-center md:justify-start mb-6">
+                    <div className={`w-16 h-16 rounded-xl flex items-center justify-center shadow-sm ${current.color}`}>
+                      {React.cloneElement(current.icon, {
+                        className: "w-8 h-8 stroke-[2.5]"
+                      })}
+                    </div>
                   </div>
 
-                  <h3 className="text-sm md:text-lg font-semibold text-gray-900 group-hover:text-herbal-green transition-colors">
+                  <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3 group-hover:text-herbal-green transition text-center md:text-left">
                     {condition.name}
                   </h3>
 
-                  <p className="hidden md:block text-gray-600 text-sm leading-relaxed">
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-4 text-center md:text-left">
                     {condition.shortDesc}
                   </p>
 
-                  <Link 
-                    to={`/process/${condition.id}`}
-                    className="inline-flex items-center text-herbal-green text-xs md:text-sm font-semibold hover:translate-x-1 transition-transform"
-                  >
-                    View
-                    <ArrowRight className="ml-1 w-3 h-3 md:w-4 md:h-4" />
-                  </Link>
+                  <div className="text-center md:text-left">
+                    <Link 
+                      to={`/process/${condition.id}`}
+                      className="inline-flex items-center text-herbal-green text-sm font-semibold hover:translate-x-1 transition-transform"
+                    >
+                      View Treatment
+                      <ArrowRight className="ml-1 w-4 h-4" />
+                    </Link>
+                  </div>
+
                 </div>
               );
             })}
+
           </div>
 
         </div>
       </section>
-      {/* ================= END CONDITIONS ================= */}
 
+       
+      {/* ================= WHY CHOOSE US ================= */}
+     <section className="py-20 text-gray-900">
+        <div className="max-w-7xl mx-auto px-6">
 
-      {/* Why Choose Us (UNCHANGED) */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Why Choose Us
+            </h2>
+          <div className="w-20 h-1 bg-herbal-green mx-auto mt-4 rounded"></div>
+          </div>
+
+          <div
+            ref={whyRef}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10"
+          >
             {WHY_CHOOSE_US.map((item, idx) => (
-              <div key={idx} className="space-y-4 text-center md:text-left">
-                <div className="inline-block p-4 bg-white rounded-xl shadow-sm">
-                  {item.icon}
+              <div
+                key={idx}
+                className={`transition-all duration-700 ${
+                  whyVisible
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-16"
+                }`}
+                style={{ transitionDelay: `${idx * 0.2}s` }}
+              >
+                <div className="bg-white/10 p-6 rounded-xl text-center">
+                  <div className="inline-flex p-4 bg-white rounded-xl text-herbal-green mb-4">
+                    {item.icon}
+                  </div>
+
+                  <h3 className="font-semibold mb-2">
+                    {item.title}
+                  </h3>
+
+                 <p className="text-sm text-gray-700">
+                    {item.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
+    {/* ================= TRUST SECTION ================= */}
+<section className="py-24 bg-white">
+  <div
+    ref={statsRef}
+    className="max-w-7xl mx-auto px-6 text-center"
+  >
+    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+      Trusted Healing. Proven Results.
+    </h2>
 
-      {/* Final CTA */}
-      <section className="py-12 md:py-20 bg-herbal-green text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-6 md:space-y-8">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-snug">
-            Begin Your Natural Skin Recovery Journey Today
-          </h2>
-          <p className="text-white/80 text-sm md:text-lg">
-            Safe. Ethical. Professional Siddha Herbal Care.
-          </p>
-          <div className="flex flex-col items-center space-y-3 md:space-y-4">
-            <Link
-              to="/contact"
-              className="bg-white text-herbal-green px-8 md:px-10 py-3 md:py-4 rounded-lg font-bold text-base md:text-xl hover:bg-soft-beige transition-all shadow-xl"
-            >
-              Book Appointment
-            </Link>
-            <div className="flex items-center space-x-2 text-white/90 font-medium text-sm md:text-base">
-              <Phone className="w-4 h-4 md:w-5 md:h-5" />
-              <span>{CONTACT_INFO.phone}</span>
-            </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      {statsData.map((stat, idx) => (
+        <div
+          key={idx}
+          className={`transition-all duration-700 ${
+            statsVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
+          style={{ transitionDelay: `${idx * 0.2}s` }}
+        >
+          <div className="text-4xl font-bold text-herbal-green mb-2">
+            {counts[idx]}{stat.suffix}
           </div>
+          <p className="text-gray-700 text-sm font-medium">
+            {stat.label}
+          </p>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
+
+      
     </div>
   );
 };

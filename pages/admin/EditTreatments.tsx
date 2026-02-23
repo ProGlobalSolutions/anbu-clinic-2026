@@ -11,6 +11,12 @@ import {
 
 const EditTreatments = () => {
   const [treatments, setTreatments] = useState<any[]>([]);
+  const [successId, setSuccessId] = useState<string | null>(null);
+  const [deleteTreatmentId, setDeleteTreatmentId] = useState<string | null>(null);
+  const [deletePointData, setDeletePointData] = useState<{
+    tIndex: number;
+    pIndex: number;
+  } | null>(null);
 
   const fetchTreatments = async () => {
     const snapshot = await getDocs(collection(db, "treatments"));
@@ -43,19 +49,24 @@ const EditTreatments = () => {
     setTreatments(updated);
   };
 
-  const deletePoint = (tIndex: number, pIndex: number) => {
+  const confirmDeletePoint = () => {
+    if (!deletePointData) return;
     const updated = [...treatments];
-    updated[tIndex].points.splice(pIndex, 1);
+    updated[deletePointData.tIndex].points.splice(deletePointData.pIndex, 1);
     setTreatments(updated);
+    setDeletePointData(null);
   };
 
   const handleSave = async (id: string, data: any) => {
     await updateDoc(doc(db, "treatments", id), data);
-    alert("Treatment Updated");
+    setSuccessId(id);
+    setTimeout(() => setSuccessId(null), 2000);
   };
 
-  const handleDeleteTreatment = async (id: string) => {
-    await deleteDoc(doc(db, "treatments", id));
+  const confirmDeleteTreatment = async () => {
+    if (!deleteTreatmentId) return;
+    await deleteDoc(doc(db, "treatments", deleteTreatmentId));
+    setDeleteTreatmentId(null);
     fetchTreatments();
   };
 
@@ -88,7 +99,12 @@ const EditTreatments = () => {
             Treatment Document ID: {treatment.id}
           </h2>
 
-          {/* Title */}
+          {successId === treatment.id && (
+            <div className="bg-green-100 text-green-700 px-4 py-2 rounded">
+              Treatment Updated Successfully
+            </div>
+          )}
+
           <div>
             <label className="block font-medium mb-1">Title</label>
             <input
@@ -100,7 +116,6 @@ const EditTreatments = () => {
             />
           </div>
 
-          {/* Image URL */}
           <div>
             <label className="block font-medium mb-1">Image URL</label>
             <input
@@ -112,7 +127,6 @@ const EditTreatments = () => {
             />
           </div>
 
-          {/* Points */}
           <div>
             <label className="block font-medium mb-2">Points</label>
 
@@ -126,7 +140,9 @@ const EditTreatments = () => {
                   className="w-full border p-2"
                 />
                 <button
-                  onClick={() => deletePoint(index, pIndex)}
+                  onClick={() =>
+                    setDeletePointData({ tIndex: index, pIndex })
+                  }
                   className="text-red-600"
                 >
                   Delete
@@ -151,7 +167,7 @@ const EditTreatments = () => {
             </button>
 
             <button
-              onClick={() => handleDeleteTreatment(treatment.id)}
+              onClick={() => setDeleteTreatmentId(treatment.id)}
               className="bg-red-600 text-white px-6 py-2 rounded"
             >
               Delete Treatment
@@ -159,6 +175,56 @@ const EditTreatments = () => {
           </div>
         </div>
       ))}
+
+      {/* Delete Treatment Modal */}
+      {deleteTreatmentId && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow w-96 text-center">
+            <h2 className="font-bold mb-4">
+              Are you sure you want to delete this treatment?
+            </h2>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setDeleteTreatmentId(null)}
+                className="border px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteTreatment}
+                className="bg-red-600 text-white px-4 py-2 rounded"
+              >
+                Confirm Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Point Modal */}
+      {deletePointData && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow w-96 text-center">
+            <h2 className="font-bold mb-4">
+              Delete this point?
+            </h2>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => setDeletePointData(null)}
+                className="border px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeletePoint}
+                className="bg-red-600 text-white px-4 py-2 rounded"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

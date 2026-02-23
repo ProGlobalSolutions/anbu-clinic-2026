@@ -98,7 +98,7 @@ Message: ${formData.message || "No message provided"}
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="John Doe"
+                    placeholder="Vignesh"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-herbal-green focus:ring-1 focus:ring-herbal-green outline-none"
                   />
                 </div>
@@ -110,7 +110,7 @@ Message: ${formData.message || "No message provided"}
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="9159385383"
+                    placeholder="9876543210"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-herbal-green focus:ring-1 focus:ring-herbal-green outline-none"
                   />
                 </div>

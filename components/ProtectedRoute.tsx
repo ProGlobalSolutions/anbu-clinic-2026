@@ -18,7 +18,11 @@ const ProtectedRoute = ({ children }: any) => {
 
   if (loading) return null;
 
-  return user ? children : <Navigate to="/admin-login" />;
+  if (!user) {
+    return <Navigate to="/admin-login" replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;

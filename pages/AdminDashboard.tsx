@@ -36,6 +36,11 @@ const AdminDashboard = () => {
           Edit Treatment Process
         </Link>
 
+        {/* 🔥 ADD THIS */}
+        <Link to="/admin-blog" className="block text-blue-600">
+          Edit Blog
+        </Link>
+
       </div>
 
       <button
