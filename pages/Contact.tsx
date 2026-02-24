@@ -23,29 +23,26 @@ const Contact = () => {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-  setResponseMsg("Full Name is required.");
+  alert("Full Name is required.");
   return;
 }
 
 if (!formData.phone.trim()) {
-  setResponseMsg("Phone Number is required.");
+  alert("Phone Number is required.");
   return;
 }
 
 const phoneRegex = /^[0-9]{10}$/;
 
 if (!phoneRegex.test(formData.phone)) {
-  setResponseMsg("Enter a valid 10-digit phone number.");
-  return;
-}
-
-if (!formData.condition.trim()) {
-  setResponseMsg("Please select a Skin Condition.");
+  alert("Enter a valid 10-digit phone number.");
   return;
 }
 
 
-    const clientNumber = "919159385383"; // 🔥 CHANGE TO CLIENT NUMBER
+
+
+    const clientNumber = "918189898232"; // 🔥 CHANGE TO CLIENT NUMBER
 
     const whatsappMessage = `
 New Consultation Request
@@ -60,7 +57,7 @@ Message: ${formData.message || "No message provided"}
 
     const whatsappURL = `https://wa.me/${clientNumber}?text=${encodedMessage}`;
 
-    window.open(whatsappURL, "_blank");
+    window.location.href = whatsappURL;
 
     setFormData({
       name: '',
@@ -169,7 +166,7 @@ Message: ${formData.message || "No message provided"}
                   <h3 className="font-bold text-gray-900 mb-1">
                     {CONTACT_INFO.hospitalName}
                   </h3>
-                  <p className="text-gray-600 text-sm">{CONTACT_INFO.address}</p>
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">{CONTACT_INFO.address}</p>
                 </div>
               </div>
 
@@ -179,7 +176,7 @@ Message: ${formData.message || "No message provided"}
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1">Phone</h3>
-                  <p className="text-gray-600 text-sm">{CONTACT_INFO.phone}</p>
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">{CONTACT_INFO.phone}</p>
                 </div>
               </div>
 
@@ -189,7 +186,7 @@ Message: ${formData.message || "No message provided"}
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1">Clinic Working Hours</h3>
-                  <p className="text-gray-600 text-sm">{CONTACT_INFO.workingHours}</p>
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">{CONTACT_INFO.workingHours}</p>
                 </div>
               </div>
 

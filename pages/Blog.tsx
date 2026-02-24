@@ -80,7 +80,7 @@ const Blog = () => {
                   {post.title}
                 </h3>
 
-                <p className="text-gray-500 text-sm mb-4">
+                <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-4">
                   {post.description}
                 </p>
 

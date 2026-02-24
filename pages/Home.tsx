@@ -2,16 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import imghome from '../assets/imghome.webp';
 import heroBg from '../assets/hero.webp'
-import { 
-  ArrowRight,
-  ShieldCheck,
-  Droplets,
-  HeartPulse,
-  Sparkles,
-  Activity,
-  Flower2,
-  CheckCircle
-} from 'lucide-react';
+import psoriasisIcon from '../assets/icons/psoriasis-removebg-preview.png';
+import acneIcon from '../assets/icons/acne.png';
+import tineaIcon from '../assets/icons/tinea.png';
+import eczemaIcon from '../assets/icons/eczema.png';
+import fungalIcon from '../assets/icons/fungal.png';
+import allergyIcon from '../assets/icons/skinallergy.png';
 import { SKIN_CONDITIONS, WHY_CHOOSE_US } from '../constants';
 import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -144,14 +140,13 @@ const Home = () => {
             {SKIN_CONDITIONS.map((condition, index) => {
 
               const iconSet = [
-                { icon: <Droplets />, color: "bg-blue-100 text-blue-600" },
-                { icon: <ShieldCheck />, color: "bg-green-100 text-green-600" },
-                { icon: <HeartPulse />, color: "bg-red-100 text-red-600" },
-                { icon: <Sparkles />, color: "bg-purple-100 text-purple-600" },
-                { icon: <Activity />, color: "bg-amber-100 text-amber-600" },
-                { icon: <Flower2 />, color: "bg-emerald-100 text-emerald-600" }
-              ];
-
+  { icon: psoriasisIcon, color: "bg-blue-100" },
+  { icon: acneIcon, color: "bg-green-100" },
+  { icon: tineaIcon, color: "bg-red-100" },
+  { icon: eczemaIcon, color: "bg-purple-100" },
+  { icon: fungalIcon, color: "bg-amber-100" },
+  { icon: allergyIcon, color: "bg-emerald-100" }
+];
               const current = iconSet[index % iconSet.length];
 
               return (
@@ -160,18 +155,20 @@ const Home = () => {
                   className="group bg-white border border-gray-100 rounded-xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="flex justify-center md:justify-start mb-6">
-                    <div className={`w-16 h-16 rounded-xl flex items-center justify-center shadow-sm ${current.color}`}>
-                      {React.cloneElement(current.icon, {
-                        className: "w-8 h-8 stroke-[2.5]"
-                      })}
-                    </div>
+                  <div className="w-[120px] h-[120px] md:w-20 md:h-20 flex items-center justify-center">
+  <img
+    src={current.icon}
+    alt={condition.name}
+   className="w-[70px] h-[70px] md:w-11 md:h-11 object-contain"
+  />
+</div>
                   </div>
 
                   <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-3 group-hover:text-herbal-green transition text-center md:text-left">
                     {condition.name}
                   </h3>
 
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-4 text-center md:text-left">
+                  <p className="text-gray-600 text-base md:text-lg leading-relaxed mb-4 text-center md:text-left">
                     {condition.shortDesc}
                   </p>
 
@@ -181,7 +178,7 @@ const Home = () => {
                       className="inline-flex items-center text-herbal-green text-sm font-semibold hover:translate-x-1 transition-transform"
                     >
                       View Treatment
-                      <ArrowRight className="ml-1 w-4 h-4" />
+                    
                     </Link>
                   </div>
 
@@ -229,7 +226,7 @@ const Home = () => {
                     {item.title}
                   </h3>
 
-                 <p className="text-sm text-gray-700">
+                 <p className="text-base md:text-lg text-gray-700 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
