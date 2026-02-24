@@ -98,7 +98,7 @@ const Home = () => {
           backgroundPosition: 'center'
         }}
       >
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
 
         <div className="relative z-10 max-w-xl mx-auto px-6 text-center space-y-5">
           <div className="inline-block px-4 py-1 bg-white/20 rounded-full text-xs font-semibold">
