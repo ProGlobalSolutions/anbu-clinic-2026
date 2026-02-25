@@ -86,7 +86,7 @@ const GeneralTreatments = () => {
 
            <Link
   to="/contact"
-  className="inline-block ml-8 mt-4 bg-herbal-green text-white px-3 py-2 text-sm rounded-lg font-semibold hover:opacity-90 transition-all"
+  className="inline-block ml-6 mt-4 bg-herbal-green text-white px-3 py-2 text-sm rounded-lg font-semibold hover:opacity-90 transition-all"
 >
   Book Personalized Consultation
 </Link>
