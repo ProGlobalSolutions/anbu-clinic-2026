@@ -51,8 +51,7 @@ const GeneralTreatments = () => {
         </section>
 
         {/* Content Section */}
-        <section className="max-w-6xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-12 items-center">
-
+        <section className="max-w-6xl mx-auto px-4 py-20 space-y-10">
           {/* Image */}
           <div>
             <img
@@ -61,10 +60,18 @@ const GeneralTreatments = () => {
               className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]"
             />
           </div>
+              
+              {/* Description from Firebase */}
+{selectedProgram.description && (
+  <p className="text-gray-700 text-lg leading-relaxed">
+    {selectedProgram.description}
+  </p>
+)}
+
 
           {/* Points */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">
+          <div className="space-y-6 ml-12">
+          <h2 className="text-2xl font-bold text-gray-900 ml-12">
               What’s Included
             </h2>
 
@@ -77,12 +84,12 @@ const GeneralTreatments = () => {
               ))}
             </ul>
 
-            <Link
-              to="/contact"
-              className="inline-block bg-herbal-green text-white px-8 py-4 rounded-xl font-bold hover:opacity-90 transition-all"
-            >
-              Book Personalized Consultation
-            </Link>
+           <Link
+  to="/contact"
+  className="inline-block ml-8 mt-4 bg-herbal-green text-white px-3 py-2 text-sm rounded-lg font-semibold hover:opacity-90 transition-all"
+>
+  Book Personalized Consultation
+</Link>
           </div>
 
         </section>
