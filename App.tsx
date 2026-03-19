@@ -22,6 +22,18 @@ import EditTreatments from './pages/admin/EditTreatments';
 import EditProcess from './pages/admin/EditProcess';
 import EditBlog from './pages/admin/EditBlog';
 
+/* NEW PAGE IMPORT */
+import PatientForm from './pages/PatientForm';
+
+/* NEW ADMIN PATIENT PAGES */
+import AdminPatientList from './pages/admin/AdminPatientList';
+import AdminPatientDetails from './pages/admin/AdminPatientDetails';
+
+
+import PatientDetails from "./pages/admin/PatientDetails";
+import PatientMedicine from "./pages/admin/PatientMedicine";
+
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
@@ -36,10 +48,12 @@ const App: React.FC = () => {
   return (
     <Router>
       <ScrollToTop />
+
       <Layout>
         <Routes>
 
           {/* Public Routes */}
+
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
 
@@ -53,7 +67,11 @@ const App: React.FC = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
 
+          {/* NEW PATIENT EXAMINATION PAGE */}
+          <Route path="/patient-examination" element={<PatientForm />} />
+
           {/* Admin Routes */}
+
           <Route path="/admin" element={<AdminLogin />} />
 
           <Route
@@ -61,6 +79,26 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* NEW ADMIN PATIENT LIST */}
+          <Route
+            path="/admin-patients"
+            element={
+              <ProtectedRoute>
+                <AdminPatientList />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* NEW ADMIN PATIENT DETAILS */}
+          <Route
+            path="/admin-patient/:id"
+            element={
+              <ProtectedRoute>
+                <AdminPatientDetails />
               </ProtectedRoute>
             }
           />
@@ -82,14 +120,15 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
+
           <Route
-  path="/admin-blog"
-  element={
-    <ProtectedRoute>
-      <EditBlog />
-    </ProtectedRoute>
-  }
-/>
+            path="/admin-blog"
+            element={
+              <ProtectedRoute>
+                <EditBlog />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/admin-faqs"
@@ -123,6 +162,7 @@ const App: React.FC = () => {
 
         </Routes>
       </Layout>
+
     </Router>
   );
 };

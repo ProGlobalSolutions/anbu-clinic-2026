@@ -55,6 +55,9 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'FAQs', path: '/faqs' },
   { label: 'Blog', path: '/blog' },
   { label: 'Contact', path: '/contact' },
+
+  /* NEW PAGE ADDED */
+  { label: 'Patient Examination', path: '/patient-examination' },
 ];
 
 export const WHY_CHOOSE_US = [
@@ -127,10 +130,6 @@ export const TREATMENT_PROGRAMS: TreatmentProgram[] = [
   }
 ];
 
-/* =========================
-   ALL 6 SKIN CONDITIONS
-========================= */
-
 export const SKIN_CONDITIONS: SkinCondition[] = [
   {
     id: 'psoriasis',
@@ -155,6 +154,7 @@ export const SKIN_CONDITIONS: SkinCondition[] = [
       }
     ]
   },
+
   {
     id: 'acne',
     name: 'Acne',
@@ -178,6 +178,7 @@ export const SKIN_CONDITIONS: SkinCondition[] = [
       }
     ]
   },
+
   {
     id: 'tinea-cruris',
     name: 'Tinea Cruris',
@@ -201,6 +202,7 @@ export const SKIN_CONDITIONS: SkinCondition[] = [
       }
     ]
   },
+
   {
     id: 'eczema',
     name: 'Eczema',
@@ -224,6 +226,7 @@ export const SKIN_CONDITIONS: SkinCondition[] = [
       }
     ]
   },
+
   {
     id: 'fungal',
     name: 'Fungal Infection',
@@ -247,6 +250,7 @@ export const SKIN_CONDITIONS: SkinCondition[] = [
       }
     ]
   },
+
   {
     id: 'allergy',
     name: 'Skin Allergy',
