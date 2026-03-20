@@ -1,12 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, MapPin, Phone, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, CONTACT_INFO } from "../constants";
-import { MapPin, Phone } from "lucide-react";
 
 import logo from "../assets/logobgremoved.webp";
 import footlogo from "../assets/footlogo.png";
+
+/* ================= MOBILE DROPDOWN ================= */
+const MobileDropdown = ({ link, setIsOpen }: any) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center">
+      <button
+        onClick={() => setOpen(!open)}
+        className="text-2xl font-medium flex items-center gap-2"
+      >
+        {link.label}
+        <ChevronDown
+          className={`transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden flex flex-col items-center mt-4 space-y-3"
+          >
+            {link.children.map((child: any) => (
+              <Link
+                key={child.label}
+                to={child.path}
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 text-lg"
+              >
+                {child.label}
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 /* ================= HEADER ================= */
 const Header = () => {
@@ -14,7 +57,7 @@ const Header = () => {
   const [desktopDropdown, setDesktopDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  let closeTimeout = null;
+  let closeTimeout: any = null;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -26,7 +69,7 @@ const Header = () => {
     setIsOpen(false);
   }, [location]);
 
-  const handleMouseEnter = (label) => {
+  const handleMouseEnter = (label: any) => {
     if (closeTimeout) clearTimeout(closeTimeout);
     setDesktopDropdown(label);
   };
@@ -48,7 +91,7 @@ const Header = () => {
         scrolled ? "bg-white shadow-md py-2 lg:py-3" : "bg-white py-3"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="w-full pl-1 pr-4 lg:pl-3 lg:pr-8">
         <div className="flex items-center justify-between">
 
           {/* LOGO */}
@@ -56,9 +99,11 @@ const Header = () => {
             <img src={logo} className="h-[5.5rem]" />
           </Link>
 
-          {/* MENU */}
+          {/* DESKTOP MENU */}
           <div className="hidden lg:flex items-center space-x-10">
-            {NAV_LINKS.map((link) => (
+            {NAV_LINKS
+  .filter(link => link.label !== "Patient Examination")
+  .map((link: any) => (
               <div
                 key={link.label}
                 className="relative"
@@ -67,13 +112,11 @@ const Header = () => {
               >
                 {link.children ? (
                   <>
-                    {/* DROPDOWN BUTTON */}
                     <button className={navClass + " flex items-center"}>
                       {link.label}
                       <ChevronDown className="ml-1 w-4 h-4" />
                     </button>
 
-                    {/* DROPDOWN MENU */}
                     <AnimatePresence>
                       {desktopDropdown === link.label && (
                         <motion.div
@@ -82,7 +125,7 @@ const Header = () => {
                           exit={{ opacity: 0, y: 10 }}
                           className="absolute left-0 mt-3 w-56 bg-white shadow-lg rounded-lg py-2 border"
                         >
-                          {link.children.map((child) => (
+                          {link.children.map((child: any) => (
                             <Link
                               key={child.label}
                               to={child.path}
@@ -114,10 +157,10 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* MOBILE */}
-          <div className="lg:hidden flex justify-between w-full items-center">
+          {/* MOBILE HEADER */}
+          <div className="lg:hidden flex justify-between w-full items-center pl-0 pr-2">
             <Link to="/">
-              <img src={logo} className="h-[4rem]" />
+             <img src={logo} className="h-[4rem] -ml-1" />
             </Link>
 
             <button onClick={() => setIsOpen(!isOpen)}>
@@ -128,24 +171,60 @@ const Header = () => {
         </div>
       </div>
 
-      {/* MOBILE MENU */}
-      {isOpen && (
-        <div className="lg:hidden bg-white p-6 space-y-4">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              to={link.path}
+      {/* 🔥 NEW MOBILE MENU (FIXED DESIGN) */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-white z-[999] flex flex-col items-center pt-20"
+          >
+
+            {/* CLOSE BUTTON */}
+            <button
               onClick={() => setIsOpen(false)}
-              className="block text-lg font-medium"
+              className="absolute top-5 right-5"
             >
-              {link.label}
-            </Link>
-          ))}
-          <Link to="/admin" className="block font-semibold">
-            Admin
+              <X size={28} />
+            </button>
+
+            {/* LOGO CENTER */}
+            <img src={logo} className="h-16 mb-10" />
+
+            {/* MENU ITEMS */}
+         <div className="flex flex-col items-center space-y-8">
+
+  {NAV_LINKS
+    .filter(link => link.label !== "Patient Examination")
+    .map((link: any) => (
+      <div key={link.label}>
+        {link.children ? (
+          <MobileDropdown link={link} setIsOpen={setIsOpen} />
+        ) : (
+          <Link
+            to={link.path}
+            onClick={() => setIsOpen(false)}
+            className="text-2xl font-medium"
+          >
+            {link.label}
           </Link>
-        </div>
-      )}
+        )}
+      </div>
+    ))}
+
+  <Link
+    to="/admin"
+    onClick={() => setIsOpen(false)}
+    className="text-2xl font-semibold"
+  >
+    Admin
+  </Link>
+
+</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
@@ -153,16 +232,88 @@ const Header = () => {
 /* ================= FOOTER ================= */
 const Footer = () => {
   return (
-    <footer className="bg-green-700 text-white py-4 text-center">
-      <img src={footlogo} className="h-16 mx-auto mb-2" />
-      <p>{CONTACT_INFO.hospitalName}</p>
-      <p className="text-sm mt-2">© {new Date().getFullYear()}</p>
+    <footer className="bg-green-700 text-white pt-12">
+
+      {/* TOP SECTION */}
+      <div className="w-full px-5 lg:max-w-7xl lg:mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 items-start">
+
+        {/* LEFT - LOGO + DESCRIPTION */}
+  <div className="flex flex-col items-center text-center">
+  <img
+    src={footlogo}
+    alt="footer logo"
+    className="h-28 md:h-32 object-contain"
+  />
+
+  <p className="text-sm leading-relaxed max-w-xs mt-2">
+    Specialized Siddha-based natural treatments for skin conditions.
+    Safe, effective, and personalized care for long-term healing.
+  </p>
+</div>
+
+        {/* MIDDLE - QUICK LINKS */}
+      <div className="hidden md:block text-center md:text-left">
+  <h3 className="font-semibold mb-4 text-lg">Quick Links</h3>
+
+         <div className="flex flex-col space-y-2 text-sm items-center md:items-start">
+            <Link to="/" className="hover:text-green-600">Home</Link>
+            <Link to="/about" className="hover:text-green-600">About</Link>
+            <Link to="/treatments" className="hover:text-green-600">Treatments</Link>
+            <Link to="/process/acne">Treatment Process</Link>
+            <Link to="/faqs" className="hover:text-green-600">FAQs</Link>
+            <Link to="/blog" className="hover:text-green-600">Blog</Link>
+            <Link to="/contact" className="hover:text-green-600">Contact</Link>
+            <Link to="/patient-examination" className="hover:text-green-600">Patient Examination</Link>
+          </div>
+        </div>
+
+        {/* RIGHT - CONTACT */}
+       <div className="text-center md:text-left">
+  <h3 className="font-semibold mb-4 text-lg">Contact</h3>
+
+         <div className="space-y-2 text-sm flex flex-col items-center md:items-start">
+ 
+            {/* ADDRESS */}
+            <div className="flex items-start gap-3 justify-center md:justify-start text-center md:text-left">
+              <MapPin className="text-green-600 mt-1" size={18} />
+              <p>
+                Anbu Naturo Hospital <br />
+                78, Jawahar Main Rd, S S Colony, <br />
+                Madurai, Tamil Nadu 600016
+              </p>
+            </div>
+
+            {/* PHONE */}
+            <div className="flex items-center gap-3">
+              <Phone className="text-green-600" size={18} />
+              <p>081898 98232</p>
+            </div>
+
+            {/* WORKING HOURS */}
+            <div className="flex items-start gap-3 justify-center md:justify-start text-center md:text-left">
+              <Clock className="text-green-600 mt-1" size={18} />
+              <p>
+                Mon - Sat: 9:00 AM - 8:00 PM <br />
+                Sun: Closed
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      {/* BOTTOM BAR */}
+      <div className="border-t mt-10 py-4 text-center text-sm">
+        © {new Date().getFullYear()} Anbu Naturo Hospital. All Rights Reserved.
+      </div>
+
     </footer>
   );
 };
 
 /* ================= LAYOUT ================= */
-const Layout = ({ children }) => {
+const Layout = ({ children }: any) => {
   const location = useLocation();
 
   return (

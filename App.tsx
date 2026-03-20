@@ -22,16 +22,13 @@ import EditTreatments from './pages/admin/EditTreatments';
 import EditProcess from './pages/admin/EditProcess';
 import EditBlog from './pages/admin/EditBlog';
 
-/* NEW PAGE IMPORT */
+/* PATIENT FORM */
 import PatientForm from './pages/PatientForm';
 
-/* NEW ADMIN PATIENT PAGES */
+/* ADMIN PATIENT PAGES */
 import AdminPatientList from './pages/admin/AdminPatientList';
-import AdminPatientDetails from './pages/admin/AdminPatientDetails';
-
-
-import PatientDetails from "./pages/admin/PatientDetails";
-import PatientMedicine from "./pages/admin/PatientMedicine";
+import PatientDetails from './pages/admin/PatientDetails';
+import PatientMedicine from './pages/admin/PatientMedicine';
 
 
 const ScrollToTop = () => {
@@ -52,7 +49,7 @@ const App: React.FC = () => {
       <Layout>
         <Routes>
 
-          {/* Public Routes */}
+          {/* ================= PUBLIC ROUTES ================= */}
 
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -60,17 +57,16 @@ const App: React.FC = () => {
           <Route path="/treatments" element={<GeneralTreatments />} />
           <Route path="/treatments/:id" element={<GeneralTreatments />} />
 
-          {/* Dynamic Treatment Process */}
           <Route path="/process/:id" element={<ConditionTreatment />} />
 
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
 
-          {/* NEW PATIENT EXAMINATION PAGE */}
-          <Route path="/patient-examination" element={<PatientForm />} />
+         
 
-          {/* Admin Routes */}
+
+          {/* ================= ADMIN ROUTES ================= */}
 
           <Route path="/admin" element={<AdminLogin />} />
 
@@ -83,7 +79,7 @@ const App: React.FC = () => {
             }
           />
 
-          {/* NEW ADMIN PATIENT LIST */}
+          {/* PATIENT LIST */}
           <Route
             path="/admin-patients"
             element={
@@ -93,15 +89,27 @@ const App: React.FC = () => {
             }
           />
 
-          {/* NEW ADMIN PATIENT DETAILS */}
+          {/* PATIENT DETAILS */}
           <Route
             path="/admin-patient/:id"
             element={
               <ProtectedRoute>
-                <AdminPatientDetails />
+                <PatientDetails />
               </ProtectedRoute>
             }
           />
+
+          {/* PATIENT MEDICINE */}
+          <Route
+            path="/admin/patient-medicine/:id"
+            element={
+              <ProtectedRoute>
+                <PatientMedicine />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ADMIN EDIT PAGES */}
 
           <Route
             path="/admin-hero"
@@ -157,12 +165,21 @@ const App: React.FC = () => {
             }
           />
 
-          {/* Fallback */}
+          <Route
+  path="/admin/patient-examination"
+  element={
+    <ProtectedRoute>
+      <PatientForm />
+    </ProtectedRoute>
+  }
+/>
+
+          {/* ================= FALLBACK ================= */}
+
           <Route path="*" element={<Home />} />
 
         </Routes>
       </Layout>
-
     </Router>
   );
 };

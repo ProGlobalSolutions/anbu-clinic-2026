@@ -123,7 +123,7 @@ const Home = () => {
 
 
       {/* ================= NEW PREMIUM SKIN CONDITIONS ================= */}
-      <section className="py-16 md:py-20">
+    <section className="py-16 md:py-20 bg-[#dcfce7]">
         <div className="max-w-7xl mx-auto px-6">
 
           <div className="text-center mb-14">
