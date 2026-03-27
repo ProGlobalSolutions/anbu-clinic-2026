@@ -174,12 +174,13 @@ const Header = () => {
       {/* 🔥 NEW MOBILE MENU (FIXED DESIGN) */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white z-[999] flex flex-col items-center pt-20"
-          >
+         <motion.div
+  initial={{ y: "-100%" }}
+  animate={{ y: 0 }}
+  exit={{ y: "-100%" }}
+  transition={{ duration: 0.7, ease: [0.25, 0.8, 0.25, 1] }}
+  className="fixed inset-0 bg-white z-[999] flex flex-col items-center pt-20"
+>
 
             {/* CLOSE BUTTON */}
             <button
