@@ -144,12 +144,26 @@ Personal Details
 Medical Details
 </h2>
 
-<p><b>Chief Complaint:</b> {patient.chiefComplaint ? "Yes":"No"}</p>
-<p><b>Past History:</b> {patient.pastHistory ? "Yes":"No"}</p>
-<p><b>Medication History:</b> {patient.medicationHistory ? "Yes":"No"}</p>
+<p><b>Chief Complaint:</b> {patient.chiefComplaint}</p>
+<p><b>Past History:</b> {patient.pastHistory}</p>
+<p><b>Medication History:</b> {patient.medicationHistory}</p>
 
-<p><b>Itching:</b> {patient.itching ? "Yes":"No"}</p>
-<p><b>Flaky Appearance:</b> {patient.flaky ? "Yes":"No"}</p>
+<hr className="my-4"/>
+
+<h3 className="font-semibold mb-2">General Examination</h3>
+
+<p><b>Bowel:</b> {patient.bowel}</p>
+<p><b>Urine:</b> {patient.urine}</p>
+<p><b>Sleep:</b> {patient.sleep}</p>
+<p><b>Appetite:</b> {patient.appetite}</p>
+<p><b>Stress:</b> {patient.stress}</p>
+
+<p><b>Heat:</b> {patient.heat}</p>
+<p><b>Itching:</b> {patient.itching}</p>
+<p><b>Flakes:</b> {patient.flakes}</p>
+<p><b>Bleeding:</b> {patient.bleeding}</p>
+<p><b>Cracks:</b> {patient.cracks}</p>
+<p><b>Pus Collection:</b> {patient.pusCollection}</p>
 
 <hr className="my-4"/>
 
@@ -201,11 +215,25 @@ Medical Details
 </h2>
 
 <div className="grid grid-cols-2 gap-y-3">
-<p><b>Chief Complaint:</b> {patient.chiefComplaint ? "Yes":"No"}</p>
+<p><b>Chief Complaint:</b> {patient.chiefComplaint}</p>
+<p><b>Past History:</b> {patient.pastHistory}</p>
+<p><b>Medication History:</b> {patient.medicationHistory}</p>
+
+<p><b>Bowel:</b> {patient.bowel}</p>
+<p><b>Urine:</b> {patient.urine}</p>
+<p><b>Sleep:</b> {patient.sleep}</p>
+<p><b>Appetite:</b> {patient.appetite}</p>
+<p><b>Stress:</b> {patient.stress}</p>
+<p><b>Heat:</b> {patient.heat}</p>
+<p><b>Itching:</b> {patient.itching}</p>
+<p><b>Flakes:</b> {patient.flakes}</p>
+<p><b>Bleeding:</b> {patient.bleeding}</p>
+<p><b>Cracks:</b> {patient.cracks}</p>
+<p><b>Pus Collection:</b> {patient.pusCollection}</p>
 <p><b>Past History:</b> {patient.pastHistory ? "Yes":"No"}</p>
 <p><b>Medication History:</b> {patient.medicationHistory ? "Yes":"No"}</p>
 <p><b>Itching:</b> {patient.itching ? "Yes":"No"}</p>
-<p><b>Flaky Appearance:</b> {patient.flaky ? "Yes":"No"}</p>
+<p><b>Flakes:</b> {patient.flakes}</p>
 </div>
 </div>
 

@@ -48,17 +48,35 @@ export default function PatientDetails() {
       <div className="bg-white p-5 rounded-lg shadow">
         <h2 className="font-semibold mb-3">Health Info</h2>
 
-        <p>Body Heat: {patient.bodyHeat}</p>
-        <p>Sleep Disturbance: {patient.sleepDisturbance}</p>
-        <p>Digestion Problem: {patient.digestionProblem}</p>
-        <p>Bowel/Urine: {patient.bowelUrine}</p>
+        <p><strong>Chief Complaint:</strong> {patient.chiefComplaint}</p>
+        <p><strong>Past History:</strong> {patient.pastHistory}</p>
+        <p><strong>Medication History:</strong> {patient.medicationHistory}</p>
 
-        <p>Alcohol: {patient.alcohol}</p>
-        <p>Smoking: {patient.smoking}</p>
-        <p>Marital Status: {patient.maritalStatus}</p>
+        <hr className="my-3"/>
 
-        <p>1st Month Plan: {patient.firstMonth}</p>
-        <p>2nd Month Plan: {patient.secondMonth}</p>
+        <p><strong>Bowel:</strong> {patient.bowel}</p>
+        <p><strong>Urine:</strong> {patient.urine}</p>
+        <p><strong>Sleep:</strong> {patient.sleep}</p>
+        <p><strong>Appetite:</strong> {patient.appetite}</p>
+        <p><strong>Stress:</strong> {patient.stress}</p>
+
+        <p><strong>Heat:</strong> {patient.heat}</p>
+        <p><strong>Itching:</strong> {patient.itching}</p>
+        <p><strong>Flakes:</strong> {patient.flakes}</p>
+        <p><strong>Bleeding:</strong> {patient.bleeding}</p>
+        <p><strong>Cracks:</strong> {patient.cracks}</p>
+        <p><strong>Pus Collection:</strong> {patient.pusCollection}</p>
+
+        <hr className="my-3"/>
+
+        <p><strong>Alcohol:</strong> {patient.alcohol}</p>
+        <p><strong>Smoking:</strong> {patient.smoking}</p>
+        <p><strong>Marital Status:</strong> {patient.maritalStatus}</p>
+
+        <hr className="my-3"/>
+
+        <p><strong>1st Month Plan:</strong> {patient.firstMonth}</p>
+        <p><strong>2nd Month Plan:</strong> {patient.secondMonth}</p>
       </div>
 
       {/* BUTTON */}

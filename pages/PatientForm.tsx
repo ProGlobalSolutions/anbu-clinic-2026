@@ -26,13 +26,20 @@ export default function PatientForm() {
     }
 
     const radioFields = [
-      "bodyHeat",
-      "sleepDisturbance",
-      "digestionProblem",
-      "bowelUrine",
       "alcohol",
       "smoking",
-      "maritalStatus"
+      "maritalStatus",
+      "bowel",
+      "urine",
+      "sleep",
+      "appetite",
+      "stress",
+      "heat",
+      "itching",
+      "flakes",
+      "bleeding",
+      "cracks",
+      "pusCollection"
     ];
 
     for (const field of radioFields) {
@@ -44,30 +51,30 @@ export default function PatientForm() {
 
     return true;
   };
-const handleSubmit = async (e: any) => {
-  e.preventDefault();
 
-  if (!validateForm()) return;
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-  try {
-    const docRef = await addDoc(collection(db, "patients"), {
-      ...formData,
-      createdAt: new Date()
-    });
+    if (!validateForm()) return;
 
-    console.log("Saved ID:", docRef.id);
+    try {
+      const docRef = await addDoc(collection(db, "patients"), {
+        ...formData,
+        createdAt: new Date()
+      });
 
-    // ✅ SHOW MESSAGE (your requirement)
-    alert("✅ Patient details saved successfully. Check in Patient List.");
+      console.log("Saved ID:", docRef.id);
 
-    // ✅ CLEAR FORM FOR NEXT PATIENT
-    setFormData({});
+      alert("✅ Patient details saved successfully. Check in Patient List.");
 
-  } catch (err) {
-    console.error("Firebase Error:", err);
-    alert("❌ Error saving data");
-  }
-};
+      setFormData({});
+
+    } catch (err) {
+      console.error("Firebase Error:", err);
+      alert("❌ Error saving data");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-200 flex justify-center p-6">
 
@@ -134,12 +141,77 @@ const handleSubmit = async (e: any) => {
               Section 2 – General Examination
             </h3>
 
-            <label><input type="checkbox" name="chiefComplaint" onChange={handleChange}/> Chief Complaint</label>
-            <label><input type="checkbox" name="pastHistory" onChange={handleChange}/> Past History</label>
-            <label><input type="checkbox" name="medicationHistory" onChange={handleChange}/> Medication History</label>
+            {/* Chief Complaint */}
+            <div className="mb-3">
+              <label className="block mb-1">Chief Complaint</label>
+              <select
+                name="chiefComplaint"
+                value={formData.chiefComplaint || ""}
+                onChange={handleChange}
+                required
+                className="w-full p-2 rounded-full border border-green-400 bg-green-50"
+              >
+                <option value="" disabled>Select</option>
+                <option value="psoriasis">Psoriasis</option>
+                <option value="diabetic">Diabetic</option>
+                <option value="varicoseVein">Varicose Vein</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
 
-            <label><input type="checkbox" name="itching" onChange={handleChange}/> Itching</label>
-            <label><input type="checkbox" name="flaky" onChange={handleChange}/> Flaky Appearance</label>
+            {/* Past History */}
+            <textarea
+              name="pastHistory"
+              value={formData.pastHistory || ""}
+              placeholder="Past History"
+              onChange={handleChange}
+              className="w-full p-2 border border-green-400 bg-green-50 rounded-lg h-20 mb-3"
+            />
+
+            {/* Medication History */}
+            <textarea
+              name="medicationHistory"
+              value={formData.medicationHistory || ""}
+              placeholder="Medication History"
+              onChange={handleChange}
+              className="w-full p-2 border border-green-400 bg-green-50 rounded-lg h-20 mb-3"
+            />
+
+            <h4 className="font-semibold mt-3 mb-2">General Examination</h4>
+
+            {[
+              { label: "Bowel", name: "bowel", options: ["normal", "abnormal"] },
+              { label: "Urine", name: "urine", options: ["normal", "abnormal"] },
+              { label: "Sleep", name: "sleep", options: ["normal", "abnormal"] },
+              { label: "Appetite", name: "appetite", options: ["normal", "abnormal"] },
+              { label: "Stress", name: "stress", options: ["normal", "abnormal"] },
+              { label: "Heat", name: "heat", options: ["yes", "no"] },
+              { label: "Itching", name: "itching", options: ["yes", "no"] },
+              { label: "Flakes", name: "flakes", options: ["yes", "no"] },
+              { label: "Bleeding", name: "bleeding", options: ["yes", "no"] },
+              { label: "Cracks", name: "cracks", options: ["yes", "no"] },
+              { label: "Pus Collection", name: "pusCollection", options: ["yes", "no"] }
+            ].map((field) => (
+              <div key={field.name} className="flex justify-between mb-2">
+                <span>{field.label}</span>
+
+                <select
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={handleChange}
+                  required
+                  className="p-1 rounded border border-green-400 bg-green-50"
+                >
+                  <option value="" disabled>Select</option>
+
+                  {field.options.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
 
           </div>
 
